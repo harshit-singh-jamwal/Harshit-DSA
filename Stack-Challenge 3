@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+int num,top=-1;
+void push(int *stack,int value){
+    stack[++top]=value;
+}
+void display(int *stack){
+    for(int i=0;i<num-1;i++){
+        for(int j=0;j<num-i-1;j++){
+            if(stack[j]<stack[j+1]){
+                int temp=stack[j];
+                stack[j]=stack[j+1];
+                stack[j+1]=temp;
+            }
+        }
+    }
+    for(int i=0;i<=top;i++){
+        printf("%d ",stack[i]);
+    }
+}
+
+int main() {
+scanf("%d",&num);
+    int stack[num];
+    for(int i=0;i<num;i++){
+        int value;
+        scanf("%d",&value);
+        push(stack,value);
+    }
+    display(stack);
+    return 0;
+}
