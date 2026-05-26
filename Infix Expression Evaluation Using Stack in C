@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include<ctype.h>
+int operand[100];
+char operator[100];
+int top1=-1,top2=-1;
+void doprocess(){
+    int x=operand[top1--];
+    int y=operand[top1--];
+    char op=operator[top2--];
+    int z;
+    switch(op){
+        case '+':z=y+x;break;
+        case '-':z=y-x;break;
+        case '*':z=y*x;break;
+        case '/':z=y/x;break;
+        case '^':z=pow(y,x);break;
+        default: z=0;
+    }
+    operand[++top1]=z;
+}
+int precedence(char op){
+    if(op=='+'||op=='-')return 1;
+    if(op=='*'||op=='/')return 2;
+    if(op=='^')return 3;
+    return 0;
+}
+int evaluateinfix(char *exp){
+    for(int i=0;i<strlen(exp);i++){
+        if(isdigit(exp[i])){
+            int num=0;
+            while(isdigit(exp[i])){
+                num=num*10+exp[i]-'0';
+                i++;
+            }
+            i--;
+            operand[++top1]=num;
+        }
+        else if(exp[i]=='+'||exp[i]=='-'||exp[i]=='*'||exp[i]=='/'||exp[i]=='^'){
+          while(top2!=-1 && precedence(exp[i])<=precedence(operator[top2])&& exp[i]!='^'){
+              doprocess();
+          }  
+            operator[++top2]=exp[i];
+        }
+        else if(exp[i]=='('){
+            operator[++top2]=exp[i];
+        }
+        else if(exp[i]==')'){
+            while(operator[top2]!='('){
+                doprocess();
+            }
+            top2--;
+        }
+       
+    }
+    while(top2!=-1){
+        doprocess();
+    }
+    return operand[top1];
+}
+int main() {
+char expr[1000];
+printf("Enter Expression: ");
+    scanf("%[^\n]",expr);
+    printf("Answer is: %d",evaluateinfix(expr));
+    return 0;
+}
