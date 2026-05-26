@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include<ctype.h>
+int operand[100];
+
+int top1=-1;
+void doprocess(char op){
+    int x=operand[top1--];
+    int y=operand[top1--];
+    
+    int z;
+    switch(op){
+        case '+':z=y+x;break;
+        case '-':z=y-x;break;
+        case '*':z=y*x;break;
+        case '/':z=y/x;break;
+        case '^':z=pow(y,x);break;
+        default: z=0;
+    }
+    operand[++top1]=z;
+}
+
+int evaluatepostfix(char *exp){
+    for(int i=0;i<strlen(exp);i++){
+        if(isdigit(exp[i])){
+            int num=0;
+            while(isdigit(exp[i])){
+                num=num*10+exp[i]-'0';
+                i++;
+            }
+            i--;
+            operand[++top1]=num;
+        }
+        else if(exp[i]=='+'||exp[i]=='-'||exp[i]=='*'||exp[i]=='/'||exp[i]=='^'){
+          doprocess(exp[i]);
+                    }
+    }
+    
+    return operand[top1];
+}
+int main() {
+char expr[1000];
+printf("Enter Postfix Expression: ");
+    scanf("%[^\n]",expr);
+    printf("Answer is: %d",evaluatepostfix(expr));
+    return 0;
+}
