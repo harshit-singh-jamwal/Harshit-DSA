@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char prefix[100];
+    char stack[100][100];
+    int top = -1;
+
+    printf("Enter prefix expression: ");
+    scanf("%s", prefix);
+
+    int len = strlen(prefix);
+
+    for (int i = len - 1; i >= 0; i--) {
+        if (isalnum(prefix[i])) {
+            char temp[2];
+            temp[0] = prefix[i];
+            temp[1] = '\0';
+            strcpy(stack[++top], temp);
+        } else {
+            char op1[100], op2[100], temp[100];
+
+            strcpy(op1, stack[top--]);
+            strcpy(op2, stack[top--]);
+
+            sprintf(temp, "(%s%c%s)", op1, prefix[i], op2);
+
+            strcpy(stack[++top], temp);
+        }
+    }
+
+    printf("Infix Expression: %s\n", stack[top]);
+
+    return 0;
+}
