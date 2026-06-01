@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char postfix[100];
+    char stack[100][100];
+    int top = -1;
+
+    printf("Enter postfix expression: ");
+    fgets(postfix, sizeof(postfix), stdin);
+
+    char *token = strtok(postfix, " \n");
+
+    while (token != NULL) {
+        if (isalnum(token[0])) {
+            strcpy(stack[++top], token);
+        }
+        else {
+            char op1[100], op2[100], temp[100];
+
+            strcpy(op2, stack[top--]);
+            strcpy(op1, stack[top--]);
+
+            sprintf(temp, "(%s%c%s)", op1, token[0], op2);
+
+            strcpy(stack[++top], temp);
+        }
+
+        token = strtok(NULL, " \n");
+    }
+
+    printf("Infix Expression: %s\n", stack[top]);
+
+    return 0;
+}
