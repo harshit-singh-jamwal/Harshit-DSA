@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int num;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &num);
+
+    int nums[200];
+
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &nums[i]);
+    }
+
+    printf("Next Greater Elements:\n");
+
+    for (int i = 0; i < num; i++) {
+        int found = -1;
+
+        for (int j = i + 1; j < i + num; j++) {
+            if (nums[j % num] > nums[i]) {
+                found = nums[j % num];
+                break;
+            }
+        }
+
+        printf("%d ", found);
+    }
+
+    printf("\n");
+
+    return 0;
+}
