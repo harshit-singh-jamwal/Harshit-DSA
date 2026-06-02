@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int N, K;
+
+    printf("Enter total array size (N) and number of queues (K): ");
+    scanf("%d %d", &N, &K);
+
+    int partSize = N / K;
+
+    int arr[100];
+    int front[10], rear[10];
+
+    for (int i = 0; i < K; i++) {
+        front[i] = -1;
+        rear[i] = -1;
+    }
+
+    int Q;
+    printf("Enter number of operations: ");
+    scanf("%d", &Q);
+
+    printf("\nOperations:\n");
+    printf("ENQUEUE q x\n");
+    printf("DEQUEUE q\n");
+    printf("PEEK q\n");
+    printf("DISPLAY q\n\n");
+
+    while (Q--) {
+        char op[20];
+        int q, x;
+
+        printf("Enter operation: ");
+        scanf("%s", op);
+
+        if (strcmp(op, "ENQUEUE") == 0) {
+            scanf("%d %d", &q, &x);
+            q--;
+
+            int start = q * partSize;
+            int end = start + partSize - 1;
+
+            if (rear[q] == end) {
+                printf("Queue Overflow\n");
+            } else {
+                if (front[q] == -1) {
+                    front[q] = start;
+                    rear[q] = start;
+                } else {
+                    rear[q]++;
+                }
+
+                arr[rear[q]] = x;
+                printf("%d inserted into Queue %d\n", x, q + 1);
+            }
+        }
+
+        else if (strcmp(op, "DEQUEUE") == 0) {
+            scanf("%d", &q);
+            q--;
+
+            if (front[q] == -1) {
+                printf("Queue Underflow\n");
+            } else {
+                printf("Removed element: %d\n", arr[front[q]]);
+
+                if (front[q] == rear[q]) {
+                    front[q] = rear[q] = -1;
+                } else {
+                    front[q]++;
+                }
+            }
+        }
+
+        else if (strcmp(op, "PEEK") == 0) {
+            scanf("%d", &q);
+            q--;
+
+            if (front[q] == -1) {
+                printf("Queue Underflow\n");
+            } else {
+                printf("Front element: %d\n", arr[front[q]]);
+            }
+        }
+
+        else if (strcmp(op, "DISPLAY") == 0) {
+            scanf("%d", &q);
+            q--;
+
+            if (front[q] == -1) {
+                printf("Queue Underflow\n");
+            } else {
+                printf("Queue %d elements: ", q + 1);
+
+                for (int i = front[q]; i <= rear[q]; i++) {
+                    printf("%d ", arr[i]);
+                }
+                printf("\n");
+            }
+        }
+
+        else {
+            printf("Invalid Operation\n");
+        }
+    }
+
+    return 0;
+}
