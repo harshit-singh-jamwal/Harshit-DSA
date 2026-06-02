@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int num;
+
+    printf("Enter number of students/sandwiches: ");
+    scanf("%d", &num);
+
+    int sandwiches[1000];
+    int students[1000];
+
+    printf("Enter sandwich preferences (0 or 1):\n");
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &sandwiches[i]);
+    }
+
+    printf("Enter student preferences (0 or 1):\n");
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &students[i]);
+    }
+
+    int front = 0, rear = num - 1, top = 0, count = 0;
+    int remaining = num;
+
+    while (remaining > 0 && count < remaining) {
+        if (students[front] == sandwiches[top]) {
+            printf("Student takes sandwich %d\n", sandwiches[top]);
+
+            front++;
+            top++;
+            remaining--;
+            count = 0;
+        } else {
+            students[++rear] = students[front++];
+
+            printf("Student moved to the back of the queue\n");
+
+            count++;
+        }
+    }
+
+    printf("Number of students unable to eat: %d\n", remaining);
+
+    return 0;
+}
