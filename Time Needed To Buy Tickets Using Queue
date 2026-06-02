@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int num;
+
+    printf("Enter number of people: ");
+    scanf("%d", &num);
+
+    int tickets[num];
+
+    printf("Enter tickets required by each person:\n");
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &tickets[i]);
+    }
+
+    int k;
+    printf("Enter the position k: ");
+    scanf("%d", &k);
+
+    int time = 0;
+
+    for (int i = 0; i < num; i++) {
+        if (i <= k) {
+            if (tickets[i] <= tickets[k])
+                time += tickets[i];
+            else
+                time += tickets[k];
+        } else {
+            if (tickets[i] <= tickets[k] - 1)
+                time += tickets[i];
+            else
+                time += tickets[k] - 1;
+        }
+    }
+
+    printf("Total time required: %d\n", time);
+
+    return 0;
+}
