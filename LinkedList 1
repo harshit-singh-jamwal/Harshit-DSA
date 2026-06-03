@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int num, list[1000];
+
+void insertInBeg(int value) {
+    for (int i = num; i > 0; i--) {
+        list[i] = list[i - 1];
+    }
+    list[0] = value;
+    num++;
+}
+
+void deleteElement(int pos) {
+    pos--; 
+
+    for (int i = pos; i < num - 1; i++) {
+        list[i] = list[i + 1];
+    }
+    num--;
+}
+
+void insertFromEnd(int value) {
+    list[num] = value;
+    num++;
+}
+
+void insertAtPosition(int pos, int value) {
+    pos--; // Convert to array index
+
+    for (int i = num; i > pos; i--) {
+        list[i] = list[i - 1];
+    }
+
+    list[pos] = value;
+    num++;
+}
+
+void display() {
+    printf("\nFinal List: ");
+    for (int i = 0; i < num; i++) {
+        printf("%d ", list[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+
+    printf("Enter number of elements: ");
+    scanf("%d", &num);
+
+    printf("Enter %d elements:\n", num);
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &list[i]);
+    }
+
+    int begValue;
+    printf("Enter value to insert at beginning: ");
+    scanf("%d", &begValue);
+    insertInBeg(begValue);
+
+    int delPos;
+    printf("Enter position to delete: ");
+    scanf("%d", &delPos);
+    deleteElement(delPos);
+
+    int endValue;
+    printf("Enter value to insert at end: ");
+    scanf("%d", &endValue);
+    insertFromEnd(endValue);
+
+    int pos, value;
+    printf("Enter position and value for insertion: ");
+    scanf("%d %d", &pos, &value);
+    insertAtPosition(pos, value);
+
+    display();
+
+    return 0;
+}
