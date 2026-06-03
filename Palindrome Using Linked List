@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+struct Node* head=NULL;
+struct Node* createNode(int data){
+    struct Node* temp=(struct Node*)malloc(sizeof(struct Node));
+    temp->data=data;
+    temp->prev=NULL;
+    temp->next=NULL;
+    return temp;
+}
+int main(){
+    int num;
+    scanf("%d",&num);
+    struct Node* tail=NULL;
+    for(int i=0;i<num;i++){
+        int value;
+        scanf("%d",&value);
+        struct Node* newNode=createNode(value);
+        if(head==NULL){
+            head=tail=newNode;
+            }
+        else{
+            tail->next=newNode;
+            newNode->prev=tail;
+            tail=newNode;
+        }
+    }
+    struct Node* start=head;
+    struct Node* end=tail;
+    int isPalindrome=1;
+    while(start!=end && start->prev!=end){
+        if(start->data!=end->data){
+            isPalindrome=0;
+        }
+        start=start->next;
+        end=end->prev;
+    }
+    if(isPalindrome){
+        printf("Palindrome : ");
+    }
+    else{
+        printf("Not Palindrome : ");
+    }
+    struct Node* temp=tail;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        if(temp->prev!=NULL){
+            printf(" ");
+        }
+        temp=temp->prev;
+    }
+    return 0;
+}
