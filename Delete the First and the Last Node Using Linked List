@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+struct Node* head=NULL;
+struct Node* createNode(int data){
+    struct Node* temp=(struct Node*)malloc(sizeof(struct Node));
+    temp->data=data;
+    temp->prev=NULL;
+    temp->next=NULL;
+    return temp;
+}
+int main(){
+    int num;
+    scanf("%d",&num);
+    struct Node* tail=NULL;
+    for(int i=0;i<num;i++){
+        int value;
+        scanf("%d",&value);
+        struct Node* newNode=createNode(value);
+        if(head==NULL){
+            head=tail=newNode;
+        }
+        else{
+            tail->next=newNode;
+            newNode->prev=tail;
+            tail=newNode;
+        }
+    }
+    head=head->next;
+    if(head!=NULL){
+        head->prev=NULL;
+    }
+    tail=tail->prev;
+    if(tail!=NULL){
+        tail->next=NULL;
+    }
+    else{
+        printf("Empty");
+        return 0;
+        }
+    struct Node* temp=head;
+    if(temp==NULL){
+        printf("Empty");
+    }
+    else{
+        while(temp!=NULL){
+            printf("%d",temp->data);
+            if(temp->next!=NULL){
+                printf(" ");
+            }
+            temp=temp->next;
+        }
+    }
+    return 0;
+}
