@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    char text[10001];
+    char undo[10001];
+    char redo[10001];
+
+    int len = 0;
+    int utop = -1;
+    int rtop = -1;
+
+    text[0] = '\0';
+
+    while (n--) {
+        int op;
+        scanf("%d", &op);
+
+        if (op == 1) {
+            char ch;
+            scanf(" %c", &ch);
+
+            text[len++] = ch;
+            text[len] = '\0';
+
+            undo[++utop] = ch;
+
+            rtop = -1; // clear redo history
+        }
+
+        else if (op == 2) { // Undo
+            if (utop != -1) {
+                char ch = undo[utop--];
+
+                redo[++rtop] = ch;
+
+                len--;
+                text[len] = '\0';
+            }
+        }
+
+        else if (op == 3) { // Redo
+            if (rtop != -1) {
+                char ch = redo[rtop--];
+
+                text[len++] = ch;
+                text[len] = '\0';
+
+                undo[++utop] = ch;
+            }
+        }
+
+        else if (op == 4) { // Print
+            printf("%s\n", text);
+        }
+    }
+
+    return 0;
+}
