@@ -1,0 +1,273 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+    struct Node *prev;
+};
+
+struct Node *head = NULL;
+
+void insertBeginning(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+
+    if (head == NULL) {
+        newNode->next = newNode;
+        newNode->prev = newNode;
+        head = newNode;
+        return;
+    }
+
+    struct Node *last = head->prev;
+
+    newNode->next = head;
+    newNode->prev = last;
+
+    last->next = newNode;
+    head->prev = newNode;
+
+    head = newNode;
+}
+
+void insertEnd(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+
+    if (head == NULL) {
+        newNode->next = newNode;
+        newNode->prev = newNode;
+        head = newNode;
+        return;
+    }
+
+    struct Node *last = head->prev;
+
+    newNode->next = head;
+    newNode->prev = last;
+
+    last->next = newNode;
+    head->prev = newNode;
+}
+
+void insertPosition(int value, int pos) {
+    if (pos == 1) {
+        insertBeginning(value);
+        return;
+    }
+
+    struct Node *temp = head;
+
+    for (int i = 1; i < pos - 1; i++)
+        temp = temp->next;
+
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+
+    newNode->next = temp->next;
+    newNode->prev = temp;
+
+    temp->next->prev = newNode;
+    temp->next = newNode;
+}
+
+void deleteBeginning() {
+    if (head == NULL)
+        return;
+
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *last = head->prev;
+    struct Node *temp = head;
+
+    head = head->next;
+
+    last->next = head;
+    head->prev = last;
+
+    free(temp);
+}
+
+void deleteEnd() {
+    if (head == NULL)
+        return;
+
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *last = head->prev;
+    struct Node *newLast = last->prev;
+
+    newLast->next = head;
+    head->prev = newLast;
+
+    free(last);
+}
+
+void deleteValue(int value) {
+    if (head == NULL)
+        return;
+
+    struct Node *temp = head;
+
+    do {
+        if (temp->data == value) {
+
+            if (temp == head) {
+                deleteBeginning();
+                return;
+            }
+
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+
+            free(temp);
+            return;
+        }
+
+        temp = temp->next;
+
+    } while (temp != head);
+}
+
+void searchNode(int value) {
+    if (head == NULL) {
+        printf("-1\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    int pos = 1;
+
+    do {
+        if (temp->data == value) {
+            printf("%d\n", pos);
+            return;
+        }
+
+        temp = temp->next;
+        pos++;
+
+    } while (temp != head);
+
+    printf("-1\n");
+}
+
+void printForward() {
+    if (head == NULL) {
+        printf("EMPTY\n");
+        return;
+    }
+
+    struct Node *temp = head;
+
+    do {
+        printf("%d", temp->data);
+        temp = temp->next;
+
+        if (temp != head)
+            printf(" ");
+
+    } while (temp != head);
+
+    printf("\n");
+}
+
+void printReverse() {
+    if (head == NULL) {
+        printf("EMPTY\n");
+        return;
+    }
+
+    struct Node *temp = head->prev;
+    struct Node *last = temp;
+
+    do {
+        printf("%d", temp->data);
+        temp = temp->prev;
+
+        if (temp != last)
+            printf(" ");
+
+    } while (temp != last);
+
+    printf("\n");
+}
+
+void countNodes() {
+    if (head == NULL) {
+        printf("0\n");
+        return;
+    }
+
+    int count = 0;
+    struct Node *temp = head;
+
+    do {
+        count++;
+        temp = temp->next;
+    } while (temp != head);
+
+    printf("%d\n", count);
+}
+
+int main() {
+    int Q;
+    scanf("%d", &Q);
+
+    while (Q--) {
+        int op;
+        scanf("%d", &op);
+
+        if (op == 1) {
+            int x;
+            scanf("%d", &x);
+            insertEnd(x);
+        }
+        else if (op == 2) {
+            int x;
+            scanf("%d", &x);
+            insertBeginning(x);
+        }
+        else if (op == 3) {
+            int x, p;
+            scanf("%d %d", &x, &p);
+            insertPosition(x, p);
+        }
+        else if (op == 4) {
+            int x;
+            scanf("%d", &x);
+            deleteValue(x);
+        }
+        else if (op == 5) {
+            deleteBeginning();
+        }
+        else if (op == 6) {
+            deleteEnd();
+        }
+        else if (op == 7) {
+            int x;
+            scanf("%d", &x);
+            searchNode(x);
+        }
+        else if (op == 8) {
+            printForward();
+        }
+        else if (op == 9) {
+            printReverse();
+        }
+        else if (op == 10) {
+            countNodes();
+        }
+    }
+
+    return 0;
+}
