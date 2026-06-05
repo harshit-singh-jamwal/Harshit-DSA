@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<stdlib.h>
+int height(int *tree,int index,int num){
+    if(index>=num || tree[index]==-1)
+        return -1;
+    int leftheight=height(tree,2*index+1,num);
+    int rightheight=height(tree,2*index+2,num);
+    int max=(leftheight>rightheight) ? leftheight:rightheight;
+    return max+1;
+}
+int main(){
+    int num;
+    scanf("%d",&num);
+    int tree[num];
+    for(int i=0;i<num;i++){
+        scanf("%d",&tree[i]);
+    }
+    int h=height(tree,0,num);
+    printf("%d",h);
+    return 0;
+}
