@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int n,e;
+    scanf("%d %d",&n,&e);
+    int arr[10][10]={0};
+    for(int i=0;i<e;i++){
+        int u,v;
+        scanf("%d %d",&u,&v);
+        arr[u][v]=1;
+        arr[v][u]=1;
+    }
+    int s;
+    scanf("%d",&s);
+    int visited[10]={0};
+    int queue[10],front=0,rear=0;
+    queue[rear++]=s;
+    visited[s]=1;
+    while(front<rear){
+        int curr=queue[front++];
+        printf("%d ",curr);
+        for(int i=0;i<n;i++){
+        if(arr[curr][i]==1 && visited[i]==0){
+            queue[rear++]=i;
+            visited[i]=1;
+        }
+    }
+    }   
+    return 0;
+}
